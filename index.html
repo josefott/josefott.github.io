@@ -6,6 +6,8 @@
     <title>A Mathematical Perspective on Transformers</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,7 +19,7 @@
         <p>Introduction to the Theory of Transformers and Large Language Models, 04.07.2024</p>
     </header>
 
-    <nav>
+    <nav id="navbar">
         <ul>
             <li><a href="#introduction">Introduction</a></li>
             <li><a href="#modeling">Modeling</a></li>
@@ -27,79 +29,94 @@
             <li><a href="#conclusion">Conclusion</a></li>
             <li><a href="#references">References</a></li>
         </ul>
+        <button id="darkModeToggle" aria-label="Toggle dark mode">🌓</button>
     </nav>
 
     <main>
-        <section id="introduction">
-            <h2>Introduction</h2>
-            <p>Transformers, introduced by Vaswani et al. in 2017, revolutionized neural network architectures. The central mechanism is Self-attention. This paper provides a mathematical framework for Self Attention using interacting particle systems, focusing on the clustering behavior of tokens in long-time dynamics.</p>
-            <figure>
-                <img src="Transformer.png" alt="The Transformer - model architecture">
-                <figcaption>The Transformer - model architecture <a href="#ref1">[Vaswani et al. 2023]</a></figcaption>
-            </figure>
-        </section>
+        <aside id="toc">
+            <h3>Table of Contents</h3>
+            <!-- This will be populated by JavaScript -->
+        </aside>
 
-        <section id="modeling">
-            <h2>Modeling</h2>
-            <h3>From Self-Attention to Particle Dynamics</h3>
-            <p>Self-attention computes a weighted sum of the input tokens to focus on relevant parts of the sequence. For particle \(i\), the attention mechanism assigns weights \(A_{ij}\) to each particle \(j\):</p>
-            <p>\[ A_{ij}(t) = \frac{e^{\beta \langle Q x_i(t), K x_j(t) \rangle}}{Z_{\beta, i}(t)} \]</p>
-            <p>where \(Z_{\beta, i}(t)\) is the normalization factor. The update for particle \(i\) based on the attention mechanism is:</p>
-            <p>\[ x_i(t+1) = x_i(t) + \sum_{j=1}^n A_{ij}(t) V x_j(t) \]</p>
-            <h3>Deriving the Key Equation</h3>
-            <p>We model the evolution of particle \(i\) by projecting the update onto the tangent space at \(x_i(t)\):</p>
-            <p>\[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)} \sum_{j=1}^n e^{\beta \langle Q x_i(t), K x_j(t) \rangle} V x_j(t) \right) \]</p>
-            <p>Here, \(P_{x_i(t)}\) is the projection operator ensuring the updated position remains on the unit sphere.</p>
-        </section>
+        <article>
+            <section id="introduction">
+                <h2>Introduction</h2>
+                <p>Transformers, introduced by Vaswani et al. in 2017, revolutionized neural network architectures. The central mechanism is Self-attention. This paper provides a mathematical framework for Self Attention using interacting particle systems, focusing on the clustering behavior of tokens in long-time dynamics.</p>
+                <figure>
+                    <img src="Transformer.png" alt="The Transformer - model architecture" loading="lazy">
+                    <figcaption>The Transformer - model architecture <a href="#ref1">[Vaswani et al. 2023]</a></figcaption>
+                </figure>
+            </section>
+    
+            <section id="modeling">
+                <h2>Modeling</h2>
+                <h3>From Self-Attention to Particle Dynamics</h3>
+                <p>Self-attention computes a weighted sum of the input tokens to focus on relevant parts of the sequence. For particle \(i\), the attention mechanism assigns weights \(A_{ij}\) to each particle \(j\):</p>
+                <p>\[ A_{ij}(t) = \frac{e^{\beta \langle Q x_i(t), K x_j(t) \rangle}}{Z_{\beta, i}(t)} \]</p>
+                <p>where \(Z_{\beta, i}(t)\) is the normalization factor. The update for particle \(i\) based on the attention mechanism is:</p>
+                <p>\[ x_i(t+1) = x_i(t) + \sum_{j=1}^n A_{ij}(t) V x_j(t) \]</p>
+                <h3>Deriving the Key Equation</h3>
+                <p>We model the evolution of particle \(i\) by projecting the update onto the tangent space at \(x_i(t)\):</p>
+                <p>\[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)} \sum_{j=1}^n e^{\beta \langle Q x_i(t), K x_j(t) \rangle} V x_j(t) \right) \]</p>
+                <p>Here, \(P_{x_i(t)}\) is the projection operator ensuring the updated position remains on the unit sphere.</p>
+            </section>
+    
+            <section id="clustering">
+                <h2>Clustering</h2>
+                <h3>Particle Dynamics Visualization</h3>
+                <figure>
+                    <img src="Figure1_1.png" alt="Histogram of particle dynamics at different layers">
+                    <figcaption>Histogram of \(\left\{ \langle x_i(t), x_j(t) \rangle \right\}_{(i,j) \in [n]^2, i \neq j}\) at different layers \(t\) in the context of the pre-trained ALBERT XLarge v2 model. <a href="#ref2">[Geshkovski et al. 2024]</a></figcaption>
+                </figure>
+    
+                <h3>Cauchy Problem for Self-Attention</h3>
+                <p>We consider the initial positions of particles on the unit sphere \(\mathbb{S}^{d-1}\) and look at simplified self-attention dynamics for \(Q,K,V = \mathbf{I}\):</p>
+                <p>\[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)} \sum_{j=1}^n e^{\beta \langle x_i(t), x_j(t) \rangle} x_j(t) \right) \]</p>
+                <h3>Clustering in High Dimension</h3>
+                <p>Main result: In high dimensions (\(d \geq n\)), particles cluster to a single point as \(t \to \infty\).</p>
+                <blockquote>
+                    <p><strong>Theorem 4.1:</strong> Let \(n \geq 1\) and \(\beta > 0\). Suppose \(d \geq n\). Consider the unique solution \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0}; (\mathbb{S}^{d-1})^n)\) to the Cauchy problem for (SA). Then almost surely there exists \(x^* \in \mathbb{S}^{d-1}\) and constants \(C, \lambda > 0\) such that \(\|x_i(t) - x^*\| \leq Ce^{-\lambda t}\) holds for all \(i \in [n]\) and \(t \geq 0\).</p>
+                </blockquote>
+            </section>
+    
+            <section id="limitations">
+                <h2>Limitations</h2>
+                <p>Is this still relevant to a transformer? We left away the linear layers, used projection instead of Layer Normalization, placed restrictions on \(Q, K, V\), and used the same matrices for all layers, not considering multiple heads.</p>
+            </section>
+    
+            <section id="future-work">
+                <h2>Future Work</h2>
+                <p>Open questions for future research:</p>
+                <ul>
+                    <li>Do the dynamics enter a transient metastable state, where for \(\beta \gg 1\), all particles stay in the vicinity of \(m < n\) clusters for long periods before collapsing to the final cluster \(\{x^*\}\)?</li>
+                    <li>Can the conclusions of the Theorems be generalized to the case of random matrices \(Q, K, V\)?</li>
+                </ul>
+            </section>
 
-        <section id="clustering">
-            <h2>Clustering</h2>
-            <h3>Particle Dynamics Visualization</h3>
-            <figure>
-                <img src="Figure1_1.png" alt="Histogram of particle dynamics at different layers">
-                <figcaption>Histogram of \(\left\{ \langle x_i(t), x_j(t) \rangle \right\}_{(i,j) \in [n]^2, i \neq j}\) at different layers \(t\) in the context of the pre-trained ALBERT XLarge v2 model. <a href="#ref2">[Geshkovski et al. 2024]</a></figcaption>
-            </figure>
+            <section id="conclusion">
+                <h2>Conclusion</h2>
+                <p>The mathematical framework for Transformers provides insights into clustering behavior, opening questions for future research and bridging the gap between theoretical understanding and practical implementations.</p>
+            </section>
 
-            <h3>Cauchy Problem for Self-Attention</h3>
-            <p>We consider the initial positions of particles on the unit sphere \(\mathbb{S}^{d-1}\) and look at simplified self-attention dynamics for \(Q,K,V = \mathbf{I}\):</p>
-            <p>\[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)} \sum_{j=1}^n e^{\beta \langle x_i(t), x_j(t) \rangle} x_j(t) \right) \]</p>
-            <h3>Clustering in High Dimension</h3>
-            <p>Main result: In high dimensions (\(d \geq n\)), particles cluster to a single point as \(t \to \infty\).</p>
-            <blockquote>
-                <p><strong>Theorem 4.1:</strong> Let \(n \geq 1\) and \(\beta > 0\). Suppose \(d \geq n\). Consider the unique solution \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0}; (\mathbb{S}^{d-1})^n)\) to the Cauchy problem for (SA). Then almost surely there exists \(x^* \in \mathbb{S}^{d-1}\) and constants \(C, \lambda > 0\) such that \(\|x_i(t) - x^*\| \leq Ce^{-\lambda t}\) holds for all \(i \in [n]\) and \(t \geq 0\).</p>
-            </blockquote>
-        </section>
-
-        <section id="limitations">
-            <h2>Limitations</h2>
-            <p>Is this still relevant to a transformer? We left away the linear layers, used projection instead of Layer Normalization, placed restrictions on \(Q, K, V\), and used the same matrices for all layers, not considering multiple heads.</p>
-        </section>
-
-        <section id="future-work">
-            <h2>Future Work</h2>
-            <p>Open questions for future research:</p>
-            <ul>
-                <li>Do the dynamics enter a transient metastable state, where for \(\beta \gg 1\), all particles stay in the vicinity of \(m < n\) clusters for long periods before collapsing to the final cluster \(\{x^*\}\)?</li>
-                <li>Can the conclusions of the Theorems be generalized to the case of random matrices \(Q, K, V\)?</li>
-            </ul>
-        </section>
-
-        <section id="conclusion">
-            <h2>Conclusion</h2>
-            <p>The mathematical framework for Transformers provides insights into clustering behavior, opening questions for future research and bridging the gap between theoretical understanding and practical implementations.</p>
-        </section>
-
-        <section id="references">
-            <h2>References</h2>
-            <ul>
-                <li id="ref1">Vaswani, Ashish, et al. "Attention is All You Need." <em>NeurIPS</em> 2023. <a href="https://arxiv.org/abs/1706.03762">[link]</a></li>
-                <li id="ref2">Geshkovski, Borjan, et al. "A Mathematical Perspective on Transformers." <em>Journal of Machine Learning Research</em> 2024. <a href="https://arxiv.org/abs/2312.10794">[link]</a></li>
-            </ul>
-        </section>
+            <section id="references">
+                <h2>References</h2>
+                <ul>
+                    <li id="ref1">Vaswani, Ashish, et al. "Attention is All You Need." <em>NeurIPS</em> 2023. <a href="https://arxiv.org/abs/1706.03762">[link]</a></li>
+                    <li id="ref2">Geshkovski, Borjan, et al. "A Mathematical Perspective on Transformers." <em>Journal of Machine Learning Research</em> 2024. <a href="https://arxiv.org/abs/2312.10794">[link]</a></li>
+                </ul>
+            </section>
+        </article>
     </main>
 
     <footer>
         <p>&copy; 2024 Josef Ott. All rights reserved.</p>
+        <div class="social-share">
+            <button aria-label="Share on Twitter">Twitter</button>
+            <button aria-label="Share on LinkedIn">LinkedIn</button>
+        </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
