@@ -247,3 +247,38 @@ body.dark-mode blockquote {
         padding: 10px;
     }
 }
+
+/* Update existing figure and img styles */
+figure {
+    margin: 20px 0;
+    text-align: center;
+}
+
+figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Add new responsive image styles */
+@media (min-width: 768px) {
+    figure img {
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 1024px) {
+    figure img {
+        max-width: 70%;
+    }
+}
+
+figcaption {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+}
