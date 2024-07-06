@@ -60,37 +60,59 @@ linkedinButton.addEventListener('click', () => {
     window.open(linkedinUrl, '_blank');
 });
 
-// Generate Table of Contents
 document.addEventListener('DOMContentLoaded', function() {
+    const tocContainer = document.getElementById('toc-container');
     const tocList = document.getElementById('toc-list');
-    const headings = document.querySelectorAll('main h2');
+    const main = document.querySelector('main');
 
-    headings.forEach((heading, index) => {
-        // Create a unique ID for the heading if it doesn't have one
-        if (!heading.id) {
-            heading.id = `section-${index + 1}`;
+    if (!tocContainer || !tocList || !main) {
+        console.error('Required elements for Table of Contents not found');
+        return;
+    }
+
+    // Function to generate table of contents
+    function generateTableOfContents() {
+        const headings = main.querySelectorAll('h2, h3');
+        if (headings.length === 0) {
+            console.warn('No headings found in the main content');
+            tocContainer.style.display = 'none';
+            return;
         }
 
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.textContent = heading.textContent;
-        link.href = `#${heading.id}`;
-        listItem.appendChild(link);
-        tocList.appendChild(listItem);
-    });
+        headings.forEach((heading, index) => {
+            if (!heading.id) {
+                heading.id = `section-${index + 1}`;
+            }
 
-    // Highlight active section in Table of Contents
-    const tocLinks = document.querySelectorAll('#toc-list a');
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.textContent = heading.textContent;
+            link.href = `#${heading.id}`;
+            
+            // Add class based on heading level
+            listItem.classList.add(heading.tagName.toLowerCase());
+            
+            listItem.appendChild(link);
+            tocList.appendChild(listItem);
+        });
+    }
 
-    function highlightActiveTocItem() {
-        const fromTop = window.scrollY + 60; // Adjust for any fixed header
+    // Function to highlight active section
+    function highlightActiveSection() {
+        const scrollPosition = window.scrollY;
+        const headings = main.querySelectorAll('h2, h3');
+        const tocLinks = tocList.querySelectorAll('a');
 
-        tocLinks.forEach(link => {
-            const section = document.querySelector(link.hash);
-            if (
-                section.offsetTop <= fromTop &&
-                section.offsetTop + section.offsetHeight > fromTop
-            ) {
+        let currentActiveIndex = -1;
+
+        headings.forEach((heading, index) => {
+            if (heading.offsetTop <= scrollPosition + 60) {
+                currentActiveIndex = index;
+            }
+        });
+
+        tocLinks.forEach((link, index) => {
+            if (index === currentActiveIndex) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
@@ -98,6 +120,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    window.addEventListener('scroll', highlightActiveTocItem);
-    window.addEventListener('load', highlightActiveTocItem);
+    generateTableOfContents();
+    
+    if (tocList.children.length > 0) {
+        window.addEventListener('scroll', highlightActiveSection);
+        highlightActiveSection(); // Initial call to highlight the active section
+    } else {
+        tocContainer.style.display = 'none';
+    }
 });
