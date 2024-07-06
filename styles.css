@@ -1,9 +1,4 @@
-/* Reset some default browser styles */
-body, h1, h2, h3, p, ul, li, figure, figcaption {
-    margin: 0;
-    padding: 0;
-}
-
+/* Base styles */
 body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.8;
@@ -13,26 +8,17 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Header styles */
 header {
     text-align: center;
     margin-bottom: 20px;
 }
 
-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
+header h1 { font-size: 2.5em; }
+header h2 { font-size: 1.5em; }
+header p { font-size: 1em; }
 
-header h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 1em;
-    margin-bottom: 5px;
-}
-
+/* Navigation styles */
 nav {
     background-color: #fff;
     padding: 10px;
@@ -49,9 +35,7 @@ nav ul {
     justify-content: center;
 }
 
-nav ul li {
-    margin: 0 10px;
-}
+nav ul li { margin: 0 10px; }
 
 nav ul li a {
     text-decoration: none;
@@ -59,37 +43,32 @@ nav ul li a {
     font-weight: bold;
 }
 
-nav ul li a:hover {
-    color: #007BFF;
-}
+nav ul li a:hover { color: #007BFF; }
 
+/* Main content styles */
 main {
     display: flex;
     gap: 20px;
 }
 
-article {
-    flex: 1;
+article, aside {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+article { flex: 1; }
 
 aside {
     width: 200px;
     position: sticky;
     top: 60px;
     align-self: start;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-section {
-    margin-bottom: 20px;
-}
+/* Section styles */
+section { margin-bottom: 20px; }
 
 h2 {
     font-size: 1.8em;
@@ -103,10 +82,7 @@ h3 {
     color: #0056b3;
 }
 
-p {
-    margin-bottom: 10px;
-}
-
+/* Code and figure styles */
 pre {
     background: #f8f8f8;
     padding: 10px;
@@ -138,6 +114,7 @@ figcaption {
     color: #555;
 }
 
+/* Other element styles */
 blockquote {
     margin: 20px 0;
     padding: 10px 20px;
@@ -146,11 +123,7 @@ blockquote {
     color: #555;
 }
 
-ul {
-    list-style: disc;
-    padding-left: 20px;
-}
-
+/* Footer styles */
 footer {
     text-align: center;
     margin-top: 20px;
@@ -160,10 +133,7 @@ footer {
     border-radius: 8px;
 }
 
-.social-share {
-    margin-top: 10px;
-}
-
+/* Utility classes */
 .social-share button {
     margin: 0 5px;
     padding: 5px 10px;
@@ -197,92 +167,31 @@ body.dark-mode aside {
     color: #f4f4f4;
 }
 
-body.dark-mode nav ul li a {
-    color: #f4f4f4;
-}
-
-body.dark-mode pre {
-    background-color: #555;
-    color: #f4f4f4;
-}
-
-body.dark-mode blockquote {
-    background-color: #555;
-    color: #f4f4f4;
-}
+body.dark-mode nav ul li a { color: #f4f4f4; }
+body.dark-mode pre { background-color: #555; color: #f4f4f4; }
+body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-    
-    header h1 {
-        font-size: 2em;
-    }
-    
-    header h2 {
-        font-size: 1.2em;
-    }
-    
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    nav ul li {
-        margin: 5px 0;
-    }
-    
-    main {
-        flex-direction: column;
-    }
-    
-    aside {
-        width: auto;
-        position: static;
-    }
-    
-    article {
-        padding: 10px;
-    }
+    body { padding: 10px; }
+    header h1 { font-size: 2em; }
+    header h2 { font-size: 1.2em; }
+    nav ul { flex-direction: column; align-items: center; }
+    nav ul li { margin: 5px 0; }
+    main { flex-direction: column; }
+    aside { width: auto; position: static; }
+    article { padding: 10px; }
 }
 
-/* Update existing figure and img styles */
-figure {
-    margin: 20px 0;
-    text-align: center;
-}
-
-figure img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-/* Add new responsive image styles */
 @media (min-width: 768px) {
-    figure img {
-        max-width: 80%;
-    }
+    figure img { max-width: 80%; }
 }
 
 @media (min-width: 1024px) {
-    figure img {
-        max-width: 70%;
-    }
+    figure img { max-width: 70%; }
 }
 
-figcaption {
-    margin-top: 10px;
-    font-style: italic;
-    color: #555;
-    font-size: 0.9em;
-}
-
+/* Table of Contents styles */
 #toc-container {
     background-color: #f8f8f8;
     border: 1px solid #ddd;
@@ -311,9 +220,7 @@ figcaption {
     font-size: 0.9em;
 }
 
-#toc-list li.h3 {
-    padding-left: 15px;
-}
+#toc-list li.h3 { padding-left: 15px; }
 
 #toc-list a {
     text-decoration: none;
@@ -330,25 +237,5 @@ figcaption {
     #toc-container {
         position: static;
         margin-bottom: 20px;
-    }
-}
-
-.toc-toggle {
-    display: none;
-    width: 100%;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 768px) {
-    .toc-toggle {
-        display: block;
-    }
-
-    #toc-list.collapsed {
-        display: none;
     }
 }
