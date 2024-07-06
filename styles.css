@@ -332,3 +332,23 @@ figcaption {
         margin-bottom: 20px;
     }
 }
+
+.toc-toggle {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .toc-toggle {
+        display: block;
+    }
+
+    #toc-list.collapsed {
+        display: none;
+    }
+}
