@@ -40,15 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Highlight active section
     function highlightActiveSection() {
         const scrollPosition = window.scrollY;
-        const headings = main.querySelectorAll('h2, h3');
+        const headings = Array.from(main.querySelectorAll('h2, h3'));
         const tocLinks = tocList.querySelectorAll('a');
         
-        let currentActiveIndex = -1;
-        headings.forEach((heading, index) => {
-            if (heading.offsetTop <= scrollPosition + 60) {
-                currentActiveIndex = index;
-            }
-        });
+        let currentActiveIndex = headings.findIndex(heading => 
+            heading.offsetTop > scrollPosition + 60
+        ) - 1;
+
+        if (currentActiveIndex === -2) currentActiveIndex = headings.length - 1;
 
         tocLinks.forEach((link, index) => {
             link.classList.toggle('active', index === currentActiveIndex);
@@ -60,6 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tocList.children.length > 0) {
         window.addEventListener('scroll', highlightActiveSection);
         highlightActiveSection();
+
+        // Smooth scrolling for ToC links
+        tocList.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').slice(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
     } else {
         tocContainer.style.display = 'none';
     }
