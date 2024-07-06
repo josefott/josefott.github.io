@@ -129,3 +129,26 @@ document.addEventListener('DOMContentLoaded', function() {
         tocContainer.style.display = 'none';
     }
 });
+
+// Collapsible table of contents on mobile
+const tocToggle = document.createElement('button');
+tocToggle.textContent = 'Toggle Table of Contents';
+tocToggle.classList.add('toc-toggle');
+tocContainer.insertBefore(tocToggle, tocContainer.firstChild);
+
+tocToggle.addEventListener('click', () => {
+    tocList.classList.toggle('collapsed');
+    tocToggle.textContent = tocList.classList.contains('collapsed') ? 'Show Table of Contents' : 'Hide Table of Contents';
+});
+
+// In script.js
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
