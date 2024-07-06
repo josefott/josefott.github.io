@@ -60,5 +60,44 @@ linkedinButton.addEventListener('click', () => {
     window.open(linkedinUrl, '_blank');
 });
 
-// Lazy loading images
-document.addEventListener("DOMContentLoaded", function()
+// Generate Table of Contents
+document.addEventListener('DOMContentLoaded', function() {
+    const tocList = document.getElementById('toc-list');
+    const headings = document.querySelectorAll('main h2');
+
+    headings.forEach((heading, index) => {
+        // Create a unique ID for the heading if it doesn't have one
+        if (!heading.id) {
+            heading.id = `section-${index + 1}`;
+        }
+
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.textContent = heading.textContent;
+        link.href = `#${heading.id}`;
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
+    });
+
+    // Highlight active section in Table of Contents
+    const tocLinks = document.querySelectorAll('#toc-list a');
+
+    function highlightActiveTocItem() {
+        const fromTop = window.scrollY + 60; // Adjust for any fixed header
+
+        tocLinks.forEach(link => {
+            const section = document.querySelector(link.hash);
+            if (
+                section.offsetTop <= fromTop &&
+                section.offsetTop + section.offsetHeight > fromTop
+            ) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', highlightActiveTocItem);
+    window.addEventListener('load', highlightActiveTocItem);
+});
