@@ -200,6 +200,7 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
     margin-bottom: 20px;
     position: sticky;
     top: 20px;
+    max-width: 300px; /* Limit width to ensure proper layout */
 }
 
 #toc-container h3 {
@@ -218,14 +219,24 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
 #toc-list li {
     margin-bottom: 8px;
     font-size: 0.9em;
+    display: block; /* Ensure each item is on its own line */
+    width: 100%; /* Full width of the container */
 }
 
-#toc-list li.h3 { padding-left: 15px; }
+#toc-list li.h2 {
+    margin-left: 0;
+}
+
+#toc-list li.h3 {
+    margin-left: 15px; /* Indent h3 items */
+}
 
 #toc-list a {
     text-decoration: none;
     color: #555;
     transition: color 0.3s ease;
+    display: inline-block; /* Allow the link to wrap if needed */
+    width: 100%; /* Full width of the list item */
 }
 
 #toc-list a:hover, #toc-list a.active {
@@ -237,5 +248,6 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
     #toc-container {
         position: static;
         margin-bottom: 20px;
+        max-width: none; /* Allow full width on smaller screens */
     }
 }
