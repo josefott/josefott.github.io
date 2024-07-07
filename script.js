@@ -21,5 +21,5 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             menu.classList.add('show');
         }
-    }
+    });
 });
