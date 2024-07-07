@@ -167,37 +167,12 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
 
 /* two-column */
 .two-column {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
     align-items: center; /* Aligns items vertically centered */
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-}
-.two-column div {
-    flex: 1; /* Allows the text to take up the remaining space */
-    padding: 10px;
-}
-
-.two-column figure {
-    flex-shrink: 0; /* Prevents the image from shrinking */
-    padding: 10px;
-    margin: 0; /* Removes default margins */
-    max-width: 50%; /* Ensures the image takes up no more than half the screen */
+    gap: 10px; /* Optional: adds space between columns */
 }
 .two-column img {
     max-width: 100%;
     height: auto;
-}
-
-.two-column figcaption {
-    text-align: center;
-    font-size: 0.9em;
-}
-
-@media (max-width: 768px) {
-    .two-column {
-        flex-direction: column; /* Stacks the columns vertically on small screens */
-    }
-    .two-column div, .two-column figure {
-        flex: 100%; /* Full width on smaller screens */
-        max-width: 100%; /* Remove max-width constraint on smaller screens */
-    }
 }
