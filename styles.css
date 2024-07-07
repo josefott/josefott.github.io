@@ -169,10 +169,20 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
 .two-column {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two equal columns */
-    align-items: center; /* Aligns items vertically centered */
-    gap: 10px; /* Optional: adds space between columns */
+    align-items: start; /* Align items to the top */
+    gap: 10px; /* Adds space between columns */
 }
 .two-column img {
     max-width: 100%;
     height: auto;
+}
+.two-column figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0; /* Remove default margin from figure */
+}
+.two-column figcaption {
+    text-align: center;
+    font-size: 0.9em;
 }
