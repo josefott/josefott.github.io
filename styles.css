@@ -171,12 +171,15 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
     align-items: center; /* Aligns items vertically centered */
     flex-wrap: wrap; /* Allows wrapping on smaller screens */
 }
-.two-column div, .two-column figure {
-    flex: 1; /* Makes both columns equally wide */
+.two-column div {
+    flex: 1; /* Allows the text to take up the remaining space */
     padding: 10px;
-    display: flex; /* Ensure figure element behaves as a flex container */
-    flex-direction: column; /* Arrange img and figcaption in a column */
+}
 
+.two-column figure {
+    flex-shrink: 0; /* Prevents the image from shrinking */
+    padding: 10px;
+    margin: 0; /* Removes default margins */
 }
 .two-column img {
     max-width: 100%;
