@@ -45,6 +45,10 @@ nav ul li a {
 
 nav ul li a:hover { color: #007BFF; }
 
+nav button#menuToggle {
+    display: none;
+}
+
 /* Main content styles */
 main {
     display: flex;
@@ -159,6 +163,12 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
     nav ul li { margin: 5px 0; }
     main { flex-direction: column; }
     article { padding: 10px; }
+    nav ul.show {
+        display: flex;
+    }
+    nav button#menuToggle {
+        display: block;
+    }
 }
 
 @media (min-width: 768px) {
