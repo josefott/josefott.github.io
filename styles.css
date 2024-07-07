@@ -134,16 +134,6 @@ footer {
 }
 
 /* Utility classes */
-.social-share button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border: none;
-    background-color: #007BFF;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
 #darkModeToggle {
     background: none;
     border: none;
@@ -189,65 +179,4 @@ body.dark-mode blockquote { background-color: #555; color: #f4f4f4; }
 
 @media (min-width: 1024px) {
     figure img { max-width: 70%; }
-}
-
-/* Table of Contents styles */
-#toc-container {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    position: sticky;
-    top: 20px;
-    max-width: 300px; /* Limit width to ensure proper layout */
-}
-
-#toc-container h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    color: #333;
-}
-
-#toc-list {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-#toc-list li {
-    margin-bottom: 8px;
-    font-size: 0.9em;
-    display: block; /* Ensure each item is on its own line */
-    width: 100%; /* Full width of the container */
-}
-
-#toc-list li.h2 {
-    margin-left: 0;
-}
-
-#toc-list li.h3 {
-    margin-left: 15px; /* Indent h3 items */
-}
-
-#toc-list a {
-    text-decoration: none;
-    color: #555;
-    transition: color 0.3s ease;
-    display: inline-block; /* Allow the link to wrap if needed */
-    width: 100%; /* Full width of the list item */
-}
-
-#toc-list a:hover, #toc-list a.active {
-    color: #007BFF;
-    font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    #toc-container {
-        position: static;
-        margin-bottom: 20px;
-        max-width: none; /* Allow full width on smaller screens */
-    }
 }
