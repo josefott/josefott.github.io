@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
-    const menu = document.getElementById('menu');
+    const darkModeToggle = document.getElementById('darkModeToggle');
     const menuToggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('menu');
 
     // Dark mode toggle
     darkModeToggle.addEventListener('click', () => {
@@ -10,16 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
     });
 
-    // Check for saved dark mode preference
+    // Apply dark mode if previously set
     if (localStorage.getItem('darkMode') === 'true') {
         body.classList.add('dark-mode');
     }
 
+    // Mobile menu toggle
     menuToggle.addEventListener('click', () => {
-        if (menu.classList.contains('show')) {
-            menu.classList.remove('show');
-        } else {
-            menu.classList.add('show');
-        }
+        menu.classList.toggle('show');
     });
 });
