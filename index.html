@@ -42,91 +42,83 @@
       <article>
         <section id="introduction">
           <h2>Introduction</h2>
-          <div class="two-column">
-            <div>
-              <p>
-                The Transformer architecture, introduced in the landmark 2017
-                paper "Attention Is All You Need" by Vaswani et al., has
-                revolutionized the field of natural language processing and
-                beyond. At its core lies the self-attention mechanism, a
-                powerful tool for capturing complex dependencies in sequential
-                data that has proven remarkably effective across a wide range of
-                applications.
-              </p>
-              <p>
-                Despite the well-documented empirical successes of Transformers,
-                a rigorous mathematical understanding of their behavior remains
-                an open challenge in the field. To address this gap, researchers
-                have undertaken various analytical approaches, focusing on
-                specific components of the Transformer architecture. One area of
-                particular interest is the pure self-attention mechanism found
-                in the Transformer's encoder.
-              </p>
-              <p>
-                A recent study by Borjan Geshkovski and colleagues offers a
-                novel perspective on the inner workings of self-attention
-                through the lens of interacting particle systems. Their research
-                investigates the emergence of clusters in self-attention
-                dynamics, shedding light on how the encoder processes and
-                represents information. While this approach examines a
-                simplified context, it offers valuable perspectives on the
-                fundamental behavior of self-attention.
-              </p>
-              <p>
-                Of particular interest is a phenomenon observed in the dynamics
-                of self-attention across layers:
-              </p>
-              <figure>
-                <img
-                  src="Figure1_1.png"
-                  alt="Histogram of particle dynamics at different layers"
-                />
-                <img
-                  src="Figure1_2.png"
-                  alt="Histogram of particle dynamics at different layers"
-                />
-                <figcaption>
-                  Figure 1: Histogram of \(\left\{ \langle x_i(t), x_j(t)
-                  \rangle \right\}_{(i,j) \in [n]^2, i \neq j}\) at different
-                  layers in the context of the pre-trained ALBERT XLarge v2
-                  model.
-                  <a href="#ref2">[Geshkovski et al. 2024]</a>
-                </figcaption>
-              </figure>
-              <p>
-                Figure 1 illustrates the distribution of \(\langle x_i(t),
-                x_j(t) \rangle\), where \(x_i(t)\) and \(x_j(t)\) represent the
-                states of particles \(i\) and \(j\) at time \(t\) (or layer
-                \(t\) in the discrete case). The initial distribution is
-                symmetric and centered at 0, indicating that most particles
-                begin in near-orthogonal configurations. As \(t\) increases, we
-                observe a shift in the distribution's mass towards 1, suggesting
-                a convergence of particles into clusters.
-              </p>
-              <p>
-                In this blog post, we will delve into the mathematical
-                formulation of self-attention as an interacting particle system,
-                and try to explain this clustering behaviour in a simplified
-                architecture.
-              </p>
-            </div>
-            <figure>
-              <img
-                src="Transformer.png"
-                alt="The Transformer - model architecture"
-                loading="lazy"
-              />
-              <figcaption>
-                The Transformer - model architecture
-                <a href="#ref1">[Vaswani et al. 2023]</a>
-              </figcaption>
-            </figure>
-          </div>
+          <p>
+            The Transformer architecture, introduced in the landmark 2017 paper
+            "Attention Is All You Need" by Vaswani et al., has revolutionized
+            the field of natural language processing and beyond. At its core
+            lies the self-attention mechanism, a powerful tool for capturing
+            complex dependencies in sequential data that has proven remarkably
+            effective across a wide range of applications.
+          </p>
+          <p>
+            Despite the well-documented empirical successes of Transformers, a
+            rigorous mathematical understanding of their behavior remains an
+            open challenge in the field. To address this gap, researchers have
+            undertaken various analytical approaches, focusing on specific
+            components of the Transformer architecture. One area of particular
+            interest is the pure self-attention mechanism found in the
+            Transformer's encoder.
+          </p>
+          <p>
+            A recent study by Borjan Geshkovski and colleagues offers a novel
+            perspective on the inner workings of self-attention through the lens
+            of interacting particle systems. Their research investigates the
+            emergence of clusters in self-attention dynamics, shedding light on
+            how the encoder processes and represents information. While this
+            approach examines a simplified context, it offers valuable
+            perspectives on the fundamental behavior of self-attention.
+          </p>
+          <p>
+            Of particular interest is a phenomenon observed in the dynamics of
+            self-attention across layers:
+          </p>
+          <figure>
+            <img
+              src="Figure1_1.png"
+              alt="Histogram of particle dynamics at different layers"
+            />
+            <img
+              src="Figure1_2.png"
+              alt="Histogram of particle dynamics at different layers"
+            />
+            <figcaption>
+              Figure 1: Histogram of \(\left\{ \langle x_i(t), x_j(t) \rangle
+              \right\}_{(i,j) \in [n]^2, i \neq j}\) at different layers in the
+              context of the pre-trained ALBERT XLarge v2 model.
+              <a href="#ref2">[Geshkovski et al. 2024]</a>
+            </figcaption>
+          </figure>
+          <p>
+            Figure 1 illustrates the distribution of \(\langle x_i(t), x_j(t)
+            \rangle\), where \(x_i(t)\) and \(x_j(t)\) represent the states of
+            particles \(i\) and \(j\) at time \(t\) (or layer \(t\) in the
+            discrete case). The initial distribution is symmetric and centered
+            at 0, indicating that most particles begin in near-orthogonal
+            configurations. As \(t\) increases, we observe a shift in the
+            distribution's mass towards 1, suggesting a convergence of particles
+            into clusters.
+          </p>
+          <p>
+            In this blog post, we will delve into the mathematical formulation
+            of self-attention as an interacting particle system, and try to
+            explain this clustering behaviour in a simplified architecture.
+          </p>
         </section>
 
         <section id="modeling">
           <h2>Modeling</h2>
           <h3>Modeling Assumptions</h3>
+          <figure class="flow-figure">
+            <img
+              src="Transformer.png"
+              alt="The Transformer - model architecture"
+              loading="lazy"
+            />
+            <figcaption>
+              The Transformer - model architecture
+              <a href="#ref1">[Vaswani et al. 2023]</a>
+            </figcaption>
+          </figure>
           <p>
             To analyze the Transformer architecture effectively, we must reduce
             its complexity through strategic simplifications:
