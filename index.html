@@ -61,9 +61,10 @@
             Transformer's encoder.
           </p>
           <p>
-            A recent study by Borjan Geshkovski and colleagues offers a novel
-            perspective on the inner workings of self-attention through the lens
-            of interacting particle systems. Their research investigates the
+            A recent study by Borjan Geshkovski and colleagues
+            <a href="#ref2">[Geshkovski et al.]</a> offers a novel perspective
+            on the inner workings of self-attention through the lens of
+            interacting particle systems. Their research investigates the
             emergence of clusters in self-attention dynamics, shedding light on
             how the encoder processes and represents information. While this
             approach examines a simplified context, it offers valuable
@@ -73,7 +74,7 @@
             Of particular interest is a phenomenon observed in the dynamics of
             self-attention across layers:
           </p>
-          <figure>
+          <figure id="fig:figure1">
             <img
               src="Figure1_1.png"
               alt="Histogram of particle dynamics at different layers"
@@ -86,18 +87,18 @@
               Figure 1: Histogram of \(\left\{ \langle x_i(t), x_j(t) \rangle
               \right\}_{(i,j) \in [n]^2, i \neq j}\) at different layers \(t\)
               in the context of the pre-trained ALBERT XLarge v2 model.
-              <a href="#ref2">[Geshkovski et al. 2024]</a>
+              <a href="#ref2">[Geshkovski et al.]</a>
             </figcaption>
           </figure>
           <p>
-            Figure 1 illustrates the distribution of \(\langle x_i(t), x_j(t)
-            \rangle\), where \(x_i(t)\) and \(x_j(t)\) represent the states of
-            particles \(i\) and \(j\) at time \(t\) (or layer \(t\) in the
-            discrete case). The initial distribution is approximately symmetric
-            and centered at 0, indicating that most particles begin in
-            near-orthogonal configurations. As \(t\) increases, we observe a
-            shift in the distribution's mass towards 1, suggesting a convergence
-            of particles into clusters.
+            <a href="#fig:figure1">Figure 1</a> illustrates the distribution of
+            \(\langle x_i(t), x_j(t) \rangle\), where \(x_i(t)\) and \(x_j(t)\)
+            represent the states of particles \(i\) and \(j\) at time \(t\) (or
+            layer \(t\) in the discrete case). The initial distribution is
+            approximately symmetric and centered at 0, indicating that most
+            particles begin in near-orthogonal configurations. As \(t\)
+            increases, we observe a shift in the distribution's mass towards 1,
+            suggesting a convergence of particles into clusters.
           </p>
           <p>
             In this blog post, we will delve into the mathematical formulation
@@ -117,7 +118,7 @@
             />
             <figcaption>
               The Transformer - model architecture
-              <a href="#ref1">[Vaswani et al. 2023]</a>
+              <a href="#ref1">[Vaswani et al. 2017]</a>
             </figcaption>
           </figure>
           <p>
@@ -127,21 +128,21 @@
           <ul>
             <li>
               <strong>Focus on Pure Self-Attention:</strong> Following
-              Geshkovski et al., we concentrate solely on the self-attention
-              mechanism, excluding the feed-forward layer and limiting our
-              analysis to a single attention head.
+              <a href="#ref2">[Geshkovski et al.]</a>, we concentrate solely on
+              the self-attention mechanism, excluding the feed-forward layer and
+              limiting our analysis to a single attention head.
             </li>
 
             <li>
               <strong>Weight Sharing:</strong> We use identical \(Q\), \(K\),
-              and \(K\) matrices across all layers, with particular emphasis on
+              and \(V\) matrices across all layers, with particular emphasis on
               the case where \(Q = K = V = I_d\) are \(d\times d\) identity
               matrices.
             </li>
 
             <li>
               <strong>Normalization Simplification:</strong> Layer normalization
-              is replaced by projection onto the unit ball.
+              is replaced by projection onto the unit sphere.
             </li>
 
             <li>
@@ -186,11 +187,14 @@
           </p>
           <h3>Deriving the Key Equation</h3>
           <p>
-            We still have to respect the norm in our modeling. The norm in the
-            Transformer is the Layer Norm. We replace this by projection onto
-            the sphere. We can reach this by projecting particle \(i\)'s
-            velocity vector \(\dot{x}_i(t)\) onto the tangent space of
-            \(x_i(t)\). This ensures that it stays on the unit sphere.
+            We have yet to incorporate a norm into our modeling approach. In the
+            Transformer architecture, the norm typically employed is Layer Norm.
+            Our aim is to simplify this by substituting it with projection onto
+            the sphere. To achieve this, we begin with initial points on the
+            unit sphere and then project the velocity vector \(\dot{x}_i(t)\) of
+            particle \(i\) onto the tangent space of \(x_i(t)\). This procedure
+            ensures that \(x_i(t)\) remains constrained to the unit sphere
+            throughout its evolution for all \(t\).
           </p>
           <p id="eq:SA_with_QKV">
             \[ \dot{x}_i(t) = P_{x_i(t)} \left(\sum_{j=1}^n A_{ij}(t) V
@@ -199,13 +203,14 @@
             \right) \tag{SA with Q,K,V}\]
           </p>
           <p>
-            Here, \(P_{x_i(t)}\) denotes the projection operator onto the
-            tangent space of \(x_i\).
+            Here, \(P_{x_i(t)}(y)= y - \langle x_i(t), y \rangle x_i(t)\)
+            denotes the projection operator onto the tangent space of
+            \(x_i(t)\).
           </p>
           <p>
-            Clustering doesn't occure for every choice of \(Q,K,V\) thus we
-            restrict ourself to certain choices of them. Our main focus will be
-            on the simple case \(Q=K=V=I_d\):
+            Clustering does not occur for every choice of \(Q, K, V\);
+            therefore, we restrict ourselves to specific choices of them. Our
+            primary focus will be on the simple case \(Q=K=V=I_d\):
           </p>
           <p id="eq:SA">
             \[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)}
@@ -213,18 +218,19 @@
             \tag{SA}\]
           </p>
           <p>
-            Mathematically, the trajectories of the particles are given by the
-            solution to the initial value problem, or Cauchy Problem, for the
-            differential equations <a href="#eq:SA">(SA)</a> or
-            <a href="#eq:SA_with_QKV">(SA with Q,K,V)</a>.
+            Mathematically, the trajectories of the particles are described by
+            the solutions to the initial value problem, or Cauchy problem, for
+            the differential equations <a href="#eq:SA">(SA)</a> or
+            <a href="#eq:SA_with_QKV">(SA with \(Q, K, V\))</a>.
           </p>
           <p>
-            Let \((x_i(0))_{i \in [n]}\) be the initial positions of particles
-            on the unit sphere \(\mathbb{S}^{d-1}\). Then there exists a unique
-            solution \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0};
-            (\mathbb{S}^{d-1})^n)\) following the dynamics <a href="#eq:SA">(SA)</a> or
-            <a href="#eq:SA_with_QKV">(SA with Q,K,V)</a> where \(C^0\) denotes the set of
-            continuous functions.
+            Let \((x_i(0))_{i \in [n]}\) denote the initial positions of
+            particles on the unit sphere \(\mathbb{S}^{d-1}\). Then there exists
+            a unique solution \((x_i(\cdot))_{i \in [n]} \in
+            C^0(\mathbb{R}_{\geq 0}; (\mathbb{S}^{d-1})^n)\), where \(C^0\)
+            denotes the set of continuous functions, following the dynamics
+            described by equations <a href="#eq:SA">(SA)</a> or
+            <a href="#eq:SA_with_QKV">(SA with \(Q, K, V\))</a>.
           </p>
         </section>
 
@@ -234,11 +240,12 @@
             We now attempt to address the question posed in the introduction:
             why does clustering occur in self-attention dynamics? Throughout our
             exploration, we will obtain several partial results, yet none will
-            fully explain even the simplest case <a href="#eq:SA">(SA)</a> (\refeq:SA)).
-            In our simplified model, we have omitted linear layers, replaced
-            layer normalization with projection, considered only a single head,
-            implemented weight sharing, and set \(Q=K=V=I_d\). Despite these
-            simplifications, a complete answer remains elusive.
+            fully explain even the simplest case
+            <a href="#eq:SA">(SA)</a>. In our simplified model, we have omitted
+            linear layers, replaced layer normalization with projection,
+            considered only a single head, implemented weight sharing, and set
+            \(Q=K=V=I_d\). Despite these simplifications, a complete answer
+            remains elusive.
           </p>
           <h3>Clustering in High Dimension</h3>
           <p>
@@ -254,9 +261,9 @@
               Suppose \(d \geq n\). Consider the unique solution
               \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0};
               (\mathbb{S}^{d-1})^n)\) to the Cauchy problem for
-              <a href="#eq:SA">(SA)</a>, corresponding to an initial sequence of points
-              \((x_i(0))_{i \in [n]}\) distributed uniformly at random. Then
-              almost surely there exists \(x^* \in \mathbb{S}^{d-1}\) and
+              <a href="#eq:SA">(SA)</a>, corresponding to an initial sequence of
+              points \((x_i(0))_{i \in [n]}\) distributed uniformly at random.
+              Then almost surely there exists \(x^* \in \mathbb{S}^{d-1}\) and
               constants \(C, \lambda > 0\) such that
             </p>
             <p>\[\|x_i(t) - x^*\| \leq Ce^{-\lambda t}\]</p>
@@ -264,8 +271,8 @@
             <p>
               In fact, let \(Q\) and \(K\) be arbitrary \(d \times d\) matrices.
               Then the same result also holds for the solution to the
-              corresponding Cauchy problem for <a href="#eq:SA_with_QKV">(SA with Q,K,V)</a> with
-              \(V = I_d\).
+              corresponding Cauchy problem for
+              <a href="#eq:SA_with_QKV">(SA with Q,K,V)</a> with \(V = I_d\).
             </p>
           </blockquote>
           <p>
@@ -273,7 +280,7 @@
             \(I_d\), while \(V = I_d\) is a requirement in the theorem. In fact,
             we cannot expect a result of this nature to hold universally for all
             matrices \(V\). For instance, it can be demonstrated that when \(V =
-            -I\), particles tend to disperse over time instead of clustering.
+            -I_d\), particles tend to disperse over time instead of clustering.
             The question persists as to whether such a result applies to certain
             properties typically found in learned value matrices, or possibly to
             almost all \(n \times n\) matrices.
@@ -296,9 +303,9 @@
               points: \(\langle x_i(0), x_j(0) \rangle = 0\) for \(i \neq j\),
               and let \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0};
               (\mathbb{S}^{d-1})^n)\) denote the unique solution to the
-              corresponding Cauchy problem for <a href="#eq:SA">(SA)</a>. Then the angle
-              \(\angle(x_i(t), x_j(t))\) is the same for all distinct \(i, j \in
-              [n]\):
+              corresponding Cauchy problem for <a href="#eq:SA">(SA)</a>. Then
+              the angle \(\angle(x_i(t), x_j(t))\) is the same for all distinct
+              \(i, j \in [n]\):
             </p>
             <p>\[\angle(x_i(t), x_j(t)) = \theta_\beta(t)\]</p>
             <p>
@@ -310,8 +317,7 @@
               \[\begin{cases} \dot{\gamma}_\beta(t) =
               \frac{2e^{\beta\gamma_\beta(t)}(1-\gamma_\beta(t))((n-1)\gamma_\beta(t)
               + 1)} {e^\beta + (n-1)e^{\beta\gamma_\beta(t)}} & \text{for } t
-              \geq 0 \\ \gamma_\beta(0) = 0 \end{cases} \tag{4.8}
-              \]
+              \geq 0 \\ \gamma_\beta(0) = 0 \end{cases} \tag{4.8} \]
             </p>
           </blockquote>
           <p>
@@ -323,7 +329,8 @@
             clustering is likely to have occurred.
           </p>
           <p>
-            To address this question, Geshkovski et al. establish the following
+            To address this question,
+            <a href="#ref2">Geshkovski et al.</a> establish the following
             theorem:
           </p>
           <blockquote>
@@ -335,9 +342,10 @@
               distributed points on \(\mathbb{S}^{d-1}\), and let
               \((x_i(\cdot))_{i \in [n]} \in C^0(\mathbb{R}_{\geq 0};
               (\mathbb{S}^{d-1})^n)\) denote the unique solution to the
-              corresponding Cauchy problem for <a href="#eq:SA">(SA)</a>. Then there
-              exist \(C = C(n,\beta) > 0\) and \(\lambda = \lambda(n,\beta) >
-              0\), such that with probability at least \(1 - 2n^2d^{-1/64}\),
+              corresponding Cauchy problem for <a href="#eq:SA">(SA)</a>. Then
+              there exist \(C = C(n,\beta) > 0\) and \(\lambda =
+              \lambda(n,\beta) > 0\), such that with probability at least \(1 -
+              2n^2d^{-1/64}\),
             </p>
             <p>
               \[\left|\langle x_i(t), x_j(t)\rangle - \gamma_\beta(t)\right|
@@ -347,17 +355,19 @@
             <p>
               holds for any \(i \neq j\) and \(t \geq 0\), where \(c(\beta) =
               e^{10\max\{1,\beta\}}\), and \(\gamma_\beta\) is the unique
-              solution to <a href="#eq:4.8">(4.8)</a></p>.
+              solution to <a href="#eq:4.8">(4.8)</a>.
             </p>
           </blockquote>
           <p>
-            The problem with this theorem lies within the following calculation.
-            If we have \(n=10\) points and want to be sure with a probability of
-            \(\frac{3}{4}\) that \(\gamma_\beta(t)\) is providing a good
-            aproximation to the true dynamics of our points, we need \(d \approx
-            6 \cdot 10^{185}\), since \[1 - 2n^2d^{-1/64} = 1- 2\cdot 10^2 \cdot
-            (6 \cdot 10^{185})^{-1/64} \approx \frac{3}{4}.\] This is obviously
-            unrealistic.
+            The issue with this theorem becomes apparent in the following
+            calculation. For instance, if we have \(n = 10\) points and aim to
+            ensure with a probability of \(\frac{3}{4}\) that
+            \(\gamma_\beta(t)\) provides a good approximation to the true
+            dynamics of our points, we would need \(d \approx 6 \cdot
+            10^{185}\). This requirement arises from the inequality \[1 -
+            2n^2d^{-1/64} = 1 - 2 \cdot 10^2 \cdot (6 \cdot 10^{185})^{-1/64}
+            \approx \frac{3}{4}.\] Clearly, this estimate is exceedingly
+            impractical and unrealistic.
           </p>
           <p>
             On the other hand experiments show that \(\gamma_\beta(t)\) indeed
@@ -374,29 +384,30 @@
               Plots of the probability that randomly initialized particles
               following <a href="#eq:SA">(SA)</a> cluster to a single point as a
               function of t and β.
-              <a href="#ref2">[Geshkovski, Borjan et al. 2024]</a>
+              <a href="#ref2">[Geshkovski et al.]</a>
             </figcaption>
           </figure>
           <p>
-            For any \(t, \beta\) the color at that point depicts the probability
-            that random inital starting points \((x_i(0))_{i \in [n]}\)
-            following <a href="#eq:SA">(SA)</a> according to \(\beta\) will have
-            clustered at time \(t\). The black line represents the prediction
-            when clustering will occur according to the function
+            For any \(t\) and \(\beta\), the color at each point indicates the
+            probability that randomly chosen initial starting points
+            \((x_i(0))_{i \in [n]}\), following equation
+            <a href="#eq:SA">(SA)</a> with respect to \(\beta\), will have
+            clustered by time \(t\). The black line represents the prediction
+            for when clustering is expected to occur based on the function
             \(\gamma_\beta(t)\).
           </p>
           <p>
-            When \(d\) is large, we can observe sharp boundaries between the
-            blue area and the red area. This can be explained by the fact that
-            \(n = 32\) is constant, and if \(d\) is large compared to \(n\), the
-            particles are indeed almost orthogonal and behave according to
+            When \(d\) is large, sharp boundaries between the blue and red areas
+            become evident. This phenomenon occurs because \(n = 32\) is
+            constant, and when \(d\) is much larger than \(n\), the particles
+            are nearly orthogonal and exhibit behavior aligned with
             \(\gamma_\beta(t)\).
           </p>
           <p>
-            When \(d\) is small, we observe larger white areas, where the
-            probability of particles being clustered is positive, but not close
-            to one. This can be explained by a long time metastable state that
-            these particles are in.
+            When \(d\) is small, larger white areas are observed where the
+            probability of particles being clustered is positive but not close
+            to one. This phenomenon can be attributed to a long-term metastable
+            state that these particles exhibit.
           </p>
           <h3>Metastable Phase</h3>
           <figure>
@@ -408,25 +419,26 @@
             <figcaption>
               Dynamics on a circle: \(d = 2\). Two randomly drawn initial
               conditions evolve for \(\beta = 4,9\) according to
-              <a href="#eq:SA">(SA)</a>. For times \(t = 0,18,30\) we see their states
-              on the right.
-              <a href="#ref2">[Geshkovski, Borjan et al. 2024]</a>
+              <a href="#eq:SA">(SA)</a>. At times \(t = 0,18,30\), their states
+              are depicted on the right.
+              <a href="#ref2">[Geshkovski et al.]</a>
             </figcaption>
           </figure>
           <p>
-            For \(\beta = 9\) we observe that the points collapse to \(3\)
-            clusters, while for \(\beta = 4\) the points collapse to \(2\)
-            clusters. These clusters stay for a long time.
+            For \(\beta = 9\), we observe that the points collapse into \(3\)
+            clusters, whereas for \(\beta = 4\), the points collapse into \(2\)
+            clusters. These clusters persist for an extended duration.
           </p>
           <h3>Removing the restraint \(d\geq n\) in the clustering theorem</h3>
           <p>
-            The next natural step to answer the initial question of when
-            clustering occurs is trying to remove the restriction \(d\geq n\) in
-            <a href="#theorem4.1">Theorem 4.1</a>.
+            The next logical step in addressing the original question about when
+            clustering occurs is to consider removing the constraint \(d \geq
+            n\) from <a href="#theorem4.1">Theorem 4.1</a>.
           </p>
           <p>
-            Indeed, the following theorem tells us, that whenever \(\beta\) is
-            small or large, clustering is happening.
+            Indeed, the following theorem indicates that clustering occurs
+            whenever \(\beta\) is sufficiently small or large, indepentent of
+            the dimension \(d\).
           </p>
           <blockquote>
             <p>
@@ -436,8 +448,9 @@
               0\) depending only on \(d\), such that whenever \(\beta \lesssim c
               n^{-1}\) or \(\beta \geq C_d n^2\), the solution \((x_i(\cdot))_{i
               \in [n]} \in C^0(\mathbb{R}_{\geq 0}; (\mathbb{S}^{d-1})^n)\) to
-              the corresponding Cauchy problem for <a href="#eq:SA">(SA)</a> satisfies
-              \[ \lim_{t \to +\infty} x_i(t) = x^* \] for all \(i \in [n]\).
+              the corresponding Cauchy problem for
+              <a href="#eq:SA">(SA)</a> satisfies \[ \lim_{t \to +\infty} x_i(t)
+              = x^* \] for all \(i \in [n]\).
             </p>
           </blockquote>
         </section>
@@ -446,13 +459,13 @@
           <h2>Limitations</h2>
           <h3>Are these results relevant to the Transformer?</h3>
           <p>
-            To achieve concrete outcomes, we streamlined the transformer model
-            to its fundamental components. We removed linear layers, substituted
-            Layer Normalization with projection, imposed constraints on Q , K ,
-            V Q,K,V, and applied weight sharing across all layers, excluding
-            consideration of multiple heads. The question of whether theoretical
-            insights from this simplified model can be applied to practical
-            scenarios remains unanswered.
+            To achieve tangible results, we simplified the transformer model to
+            its core components. This involved removing linear layers, using
+            projection instead of Layer Normalization, placing constraints on
+            \(Q, K, V\), and employing weight sharing across all layers, while
+            disregarding multiple heads. The question remains whether
+            theoretical insights derived from this simplified model can
+            translate to practical applications.
           </p>
           <h3>Does Clustering matter?</h3>
           <p>
@@ -472,7 +485,7 @@
           <ul>
             <li>
               Do the dynamics enter a transient metastable state, where for
-              \(\beta \gg 1\), all particles stay in the vicinity of \(m < n\)
+              \(\beta \gg 1\), all particles stay in the vicinity of \(m \lt n\)
               clusters for long periods before collapsing to the final cluster
               \(\{x^*\}\)?
             </li>
@@ -487,13 +500,12 @@
           <h2>References</h2>
           <ul>
             <li id="ref1">
-              Vaswani, Ashish, et al. "Attention is All You Need."
-              <em>NeurIPS</em> 2023.
+              Vaswani, Ashish, et al. "Attention is All You Need." 2017.
               <a href="https://arxiv.org/abs/1706.03762">[link]</a>
             </li>
             <li id="ref2">
               Geshkovski, Borjan, et al. "A Mathematical Perspective on
-              Transformers." <em>Journal of Machine Learning Research</em> 2024.
+              Transformers." 2023.
               <a href="https://arxiv.org/abs/2312.10794">[link]</a>
             </li>
           </ul>
