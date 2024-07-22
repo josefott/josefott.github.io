@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script
       id="MathJax-script"
       async
@@ -217,23 +218,31 @@
             on relevant parts of the sequence. For particle \(i\), the attention
             mechanism assigns weights \(A_{ij}\) to each particle \(j\):
           </p>
-          <p>
-            \[ A_{ij}(t) = \frac{e^{\beta \langle Q x_i(t), K x_j(t)
-            \rangle}}{Z_{\beta, i}(t)} \]
-          </p>
+          <div class="equation-container">
+            <div class="equation-scroll">
+              \[ A_{ij}(t) = \frac{e^{\beta \langle Q x_i(t), K x_j(t)
+              \rangle}}{Z_{\beta, i}(t)} \]
+            </div>
+          </div>
           <p>
             where \(Z_{\beta, i}(t)\) is the normalization factor that ensures
             that the weights of the attention matrix \(A_{ij}\) sum row-wise to
             one.
           </p>
-          <p>
-            \[Z_{\beta, i}(t) = \sum_{j=1}^n e^{\beta \langle Q x_i(t), K x_j(t)
-            \rangle}\]
-          </p>
+          <div class="equation-container">
+            <div class="equation-scroll">
+              \[Z_{\beta, i}(t) = \sum_{j=1}^n e^{\beta \langle Q x_i(t), K
+              x_j(t) \rangle}\]
+            </div>
+          </div>
           <p>
             The update for particle \(i\) based on the attention mechanism is:
           </p>
-          <p>\[ x_i(t+1) = x_i(t) + \sum_{j=1}^n A_{ij}(t) V x_j(t) \]</p>
+          <div class="equation-container">
+            <div class="equation-scroll">
+              \[ x_i(t+1) = x_i(t) + \sum_{j=1}^n A_{ij}(t) V x_j(t) \]
+            </div>
+          </div>
           <p>
             Thus for continuous time \(\sum_{j=1}^n A_{ij}(t) V x_j(t)\) can be
             interpreted as the velocity \(\dot{x}_i(t)\) of the particle \(x_i\)
@@ -250,12 +259,14 @@
             ensures that \(x_i(t)\) remains constrained to the unit sphere
             throughout its evolution for all \(t\).
           </p>
-          <p id="eq:SA_with_QKV">
-            \[ \dot{x}_i(t) = P_{x_i(t)} \left(\sum_{j=1}^n A_{ij}(t) V
-            x_j(t)\right) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)}
-            \sum_{j=1}^n e^{\beta \langle Q x_i(t), K x_j(t) \rangle} V x_j(t)
-            \right) \tag{SA with Q,K,V}\]
-          </p>
+          <div class="equation-container" id="eq:SA_with_QKV">
+            <div class="equation-scroll">
+              \[ \dot{x}_i(t) = P_{x_i(t)} \left(\sum_{j=1}^n A_{ij}(t) V
+              x_j(t)\right) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)}
+              \sum_{j=1}^n e^{\beta \langle Q x_i(t), K x_j(t) \rangle} V x_j(t)
+              \right) \tag{SA with Q,K,V}\]
+            </div>
+          </div>
           <p>
             Here, \(P_{x_i(t)}(y)= y - \langle x_i(t), y \rangle x_i(t)\)
             denotes the projection operator onto the tangent space of
@@ -266,11 +277,13 @@
             therefore, we restrict ourselves to specific choices of them. Our
             primary focus will be on the simple case \(Q=K=V=I_d\):
           </p>
-          <p id="eq:SA">
-            \[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)}
-            \sum_{j=1}^n e^{\beta \langle x_i(t), x_j(t) \rangle} x_j(t) \right)
-            \tag{SA}\]
-          </p>
+          <div class="equation-container" id="eq:SA">
+            <div class="equation-scroll">
+              \[ \dot{x}_i(t) = P_{x_i(t)} \left( \frac{1}{Z_{\beta, i}(t)}
+              \sum_{j=1}^n e^{\beta \langle x_i(t), x_j(t) \rangle} x_j(t)
+              \right) \tag{SA}\]
+            </div>
+          </div>
           <p>
             Mathematically, the trajectories of the particles are described by
             the solutions to the initial value problem, or Cauchy problem, for
@@ -320,7 +333,11 @@
               Then almost surely there exists \(x^* \in \mathbb{S}^{d-1}\) and
               constants \(C, \lambda > 0\) such that
             </p>
-            <p>\[\|x_i(t) - x^*\| \leq Ce^{-\lambda t}\]</p>
+            <div class="equation-container">
+              <div class="equation-scroll">
+                \[\|x_i(t) - x^*\| \leq Ce^{-\lambda t}\]
+              </div>
+            </div>
             <p>holds for all \(i \in [n]\) and \(t \geq 0\).</p>
             <p>
               In fact, let \(Q\) and \(K\) be arbitrary \(d \times d\) matrices.
@@ -361,18 +378,24 @@
               the angle \(\angle(x_i(t), x_j(t))\) is the same for all distinct
               \(i, j \in [n]\):
             </p>
-            <p>\[\angle(x_i(t), x_j(t)) = \theta_\beta(t)\]</p>
+            <div class="equation-container">
+              <div class="equation-scroll">
+                \[\angle(x_i(t), x_j(t)) = \theta_\beta(t)\]
+              </div>
+            </div>
             <p>
               for \(t \geq 0\) and some \(\theta_\beta \in C^0(\mathbb{R}_{\geq
               0}; \mathbb{T})\). Furthermore, for (SA), \(\gamma_\beta(t) :=
               \cos(\theta_\beta(t))\) satisfies
             </p>
-            <p id="eq:4.8">
-              \[\begin{cases} \dot{\gamma}_\beta(t) =
-              \frac{2e^{\beta\gamma_\beta(t)}(1-\gamma_\beta(t))((n-1)\gamma_\beta(t)
-              + 1)} {e^\beta + (n-1)e^{\beta\gamma_\beta(t)}} & \text{for } t
-              \geq 0 \\ \gamma_\beta(0) = 0 \end{cases} \tag{4.8} \]
-            </p>
+            <div class="equation-container" id="eq:4.8">
+              <div class="equation-scroll">
+                \[\begin{cases} \dot{\gamma}_\beta(t) =
+                \frac{2e^{\beta\gamma_\beta(t)}(1-\gamma_\beta(t))((n-1)\gamma_\beta(t)
+                + 1)} {e^\beta + (n-1)e^{\beta\gamma_\beta(t)}} & \text{for } t
+                \geq 0 \\ \gamma_\beta(0) = 0 \end{cases} \tag{4.8} \]
+              </div>
+            </div>
           </blockquote>
           <p>
             Our expectation now is that the function \(\gamma_\beta(t)\) serves
@@ -401,11 +424,13 @@
               \lambda(n,\beta) > 0\), such that with probability at least \(1 -
               2n^2d^{-1/64}\),
             </p>
-            <p>
-              \[\left|\langle x_i(t), x_j(t)\rangle - \gamma_\beta(t)\right|
-              \leq \min\left\{2 \cdot c(\beta)^{nt}\sqrt{\frac{\log d}{d}},
-              Ce^{-\lambda t}\right\}\]
-            </p>
+            <div class="equation-container">
+              <div class="equation-scroll">
+                \[\left|\langle x_i(t), x_j(t)\rangle - \gamma_\beta(t)\right|
+                \leq \min\left\{2 \cdot c(\beta)^{nt}\sqrt{\frac{\log d}{d}},
+                Ce^{-\lambda t}\right\}\]
+              </div>
+            </div>
             <p>
               holds for any \(i \neq j\) and \(t \geq 0\), where \(c(\beta) =
               e^{10\max\{1,\beta\}}\), and \(\gamma_\beta\) is the unique
@@ -418,10 +443,16 @@
             ensure with a probability of \(\frac{3}{4}\) that
             \(\gamma_\beta(t)\) provides a good approximation to the true
             dynamics of our points, we would need \(d \approx 6 \cdot
-            10^{185}\). This requirement arises from the inequality \[1 -
-            2n^2d^{-1/64} = 1 - 2 \cdot 10^2 \cdot (6 \cdot 10^{185})^{-1/64}
-            \approx \frac{3}{4}.\] Clearly, this estimate is exceedingly
-            impractical and unrealistic.
+            10^{185}\). This requirement arises from the inequality
+          </p>
+          <div class="equation-container">
+            <div class="equation-scroll">
+              \[1 - 2n^2d^{-1/64} = 1 - 2 \cdot 10^2 \cdot (6 \cdot
+              10^{185})^{-1/64} \approx \frac{3}{4}.\]
+            </div>
+          </div>
+          <p>
+            Clearly, this estimate is exceedingly impractical and unrealistic.
           </p>
           <p>
             On the other hand experiments show that \(\gamma_\beta(t)\) indeed
@@ -541,9 +572,14 @@
               n^{-1}\) or \(\beta \geq C_d n^2\), the solution \((x_i(\cdot))_{i
               \in [n]} \in C^0(\mathbb{R}_{\geq 0}; (\mathbb{S}^{d-1})^n)\) to
               the corresponding Cauchy problem for
-              <a href="#eq:SA">(SA)</a> satisfies \[ \lim_{t \to +\infty} x_i(t)
-              = x^* \] for all \(i \in [n]\).
+              <a href="#eq:SA">(SA)</a> satisfies
             </p>
+            <div class="equation-container">
+              <div class="equation-scroll">
+                \[ \lim_{t \to +\infty} x_i(t) = x^* \]
+              </div>
+            </div>
+            <p>for all \(i \in [n]\).</p>
           </blockquote>
         </section>
 
