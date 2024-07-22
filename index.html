@@ -75,16 +75,68 @@
             self-attention across layers:
           </p>
           <figure id="fig:figure1">
-            <img
-              src="Figure1_1.png"
-              alt="Histogram of particle dynamics at different layers"
-              loading="lazy"
-            />
-            <img
-              src="Figure1_2.png"
-              alt="Histogram of particle dynamics at different layers"
-              loading="lazy"
-            />
+            <div class="figuregrid">
+              <img
+                src="figures/histograms/histogram_layer_0.pdf"
+                alt="Histogram Layer 0"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_1.pdf"
+                alt="Histogram Layer 1"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_21.pdf"
+                alt="Histogram Layer 21"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_22.pdf"
+                alt="Histogram Layer 22"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_23.pdf"
+                alt="Histogram Layer 23"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_24.pdf"
+                alt="Histogram Layer 24"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_25.pdf"
+                alt="Histogram Layer 25"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_26.pdf"
+                alt="Histogram Layer 26"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_27.pdf"
+                alt="Histogram Layer 27"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_46.pdf"
+                alt="Histogram Layer 46"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_47.pdf"
+                alt="Histogram Layer 47"
+                loading="lazy"
+              />
+              <img
+                src="figures/histograms/histogram_layer_48.pdf"
+                alt="Histogram Layer 48"
+                loading="lazy"
+              />
+            </div>
             <figcaption>
               Figure 1: Histogram of \(\left\{ \langle x_i(t), x_j(t) \rangle
               \right\}_{(i,j) \in [n]^2, i \neq j}\) at different layers \(t\)
@@ -114,7 +166,7 @@
           <h3>Modeling Assumptions</h3>
           <figure class="flow-figure">
             <img
-              src="Transformer.png"
+              src="figures/Transformer.png"
               alt="The Transformer - model architecture"
               loading="lazy"
             />
@@ -377,11 +429,48 @@
           </p>
 
           <figure>
-            <img
-              src="Figure2.png"
-              alt="Experiments regarding \(\gamma_\beta(t)\)"
-              loading="lazy"
-            />
+            <div class="figuregrid">
+              <figure>
+                <img src="figures/d2+curve.pdf" alt="\(d=2\)" loading="lazy" />
+                <figcaption>\(d=2\)</figcaption>
+              </figure>
+              <figure>
+                <img src="figures/d8+curve.pdf" alt="\(d=8\)" loading="lazy" />
+                <figcaption>\(d=8\)</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="figures/d32+curve.pdf"
+                  alt="\(d=32\)"
+                  loading="lazy"
+                />
+                <figcaption>\(d=32\)</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="figures/d128+curve.pdf"
+                  alt="\(d=128\)"
+                  loading="lazy"
+                />
+                <figcaption>\(d=128\)</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="figures/d512+curve.pdf"
+                  alt="\(d=512\)"
+                  loading="lazy"
+                />
+                <figcaption>\(d=512\)</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="figures/pt-d1024-curve.pdf"
+                  alt="\(d=1024\)"
+                  loading="lazy"
+                />
+                <figcaption>\(d=1024\)</figcaption>
+              </figure>
+            </div>
             <figcaption>
               Plots of the probability that randomly initialized particles
               following <a href="#eq:SA">(SA)</a> cluster to a single point as a
@@ -389,6 +478,7 @@
               <a href="#ref2">[Geshkovski et al.]</a>
             </figcaption>
           </figure>
+
           <p>
             For any \(t\) and \(\beta\), the color at each point indicates the
             probability that randomly chosen initial starting points
@@ -414,7 +504,7 @@
           <h3>Metastable Phase</h3>
           <figure>
             <img
-              src="Figure3.png"
+              src="figures/zoom.pdf"
               alt="Dynamics on a circle. Metastable states."
               loading="lazy"
             />
