@@ -146,6 +146,19 @@ blockquote {
   color: #555;
 }
 
+.equation-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.equation-scroll {
+  display: inline-block;
+  white-space: nowrap;
+  min-width: 100%;
+}
+
 /* Footer styles */
 footer {
   text-align: center;
@@ -230,6 +243,9 @@ body.dark-mode blockquote {
       3,
       1fr
     ); /* 3 columns per row on smaller screens */
+  }
+  .equation-container {
+    font-size: 0.9em; /* Slightly reduce font size on small screens */
   }
 }
 
