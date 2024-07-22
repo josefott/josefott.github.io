@@ -201,6 +201,9 @@ body.dark-mode blockquote {
   background-color: #555;
   color: #f4f4f4;
 }
+body.dark-mode figcaption {
+  color: #ddd; /* Lighter color for better contrast */
+}
 
 /* Responsive styles */
 @media (max-width: 768px) {
