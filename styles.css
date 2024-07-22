@@ -124,6 +124,19 @@ figcaption {
   margin: 0 0 15px 15px;
 }
 
+.figuregrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  justify-content: center;
+  padding: 20px;
+}
+.figuregrid img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* Other element styles */
 blockquote {
   margin: 20px 0;
@@ -211,6 +224,12 @@ body.dark-mode blockquote {
     float: none;
     margin: 0 auto 15px;
     max-width: 100%;
+  }
+  .figuregrid {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 3 columns per row on smaller screens */
   }
 }
 
